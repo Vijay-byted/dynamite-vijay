@@ -1,0 +1,16 @@
+{
+  "name": "Dynamite Vijay",
+  "short_name": "Dynamite",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#241044",
+  "theme_color": "#241044",
+  "description": "Dynamite Vijay Study App",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
