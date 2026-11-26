@@ -1,16 +1,24 @@
+
 {
+  "id": "./",
   "name": "Dynamite Vijay",
   "short_name": "Dynamite",
+  "description": "Dynamite Vijay - Your Personal Study Platform",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#241044",
   "theme_color": "#241044",
-  "description": "Dynamite Vijay Study App",
+  "categories": [
+    "education"
+  ],
   "icons": [
     {
       "src": "icon.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }
