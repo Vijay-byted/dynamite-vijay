@@ -1,473 +1,354 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#241044">
-  <meta name="description" content="Dynamite Vijay - Your Personal Study Platform">
-  <link rel="manifest" href="./manifest.json">
-  <title>Dynamite Vijay</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#241044">
+<link rel="manifest" href="./manifest.json">
+<title>Dynamite Vijay</title>
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
-
-    body {
-      background: #170b2b;
-      color: white;
-      min-height: 100vh;
-    }
-
-    button {
-      cursor: pointer;
-      border: none;
-      font-size: 15px;
-    }
-
-    /* Splash Screen */
-    #splash {
-      position: fixed;
-      inset: 0;
-      z-index: 1000;
-      background: linear-gradient(145deg, #170b2b, #38205d);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      transition: opacity .5s ease;
-    }
-
-    #splash img {
-      width: 170px;
-      height: 170px;
-      object-fit: contain;
-      border-radius: 50%;
-      box-shadow: 0 0 35px #d5a64255;
-    }
-
-    #splash h1 {
-      color: #f1c76b;
-      margin-top: 22px;
-      font-size: 27px;
-      letter-spacing: 2px;
-    }
-
-    #splash p {
-      color: #ddd0f4;
-      margin-top: 10px;
-      letter-spacing: 1px;
-    }
-
-    .loader {
-      width: 35px;
-      height: 35px;
-      border: 3px solid #ffffff33;
-      border-top-color: #e8bd60;
-      border-radius: 50%;
-      margin-top: 35px;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* Main App */
-    header {
-      background: #241044;
-      padding: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid #b99148;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #f1c76b;
-      font-weight: bold;
-      font-size: 17px;
-    }
-
-    .brand img {
-      width: 42px;
-      height: 42px;
-      object-fit: contain;
-      border-radius: 50%;
-    }
-
-    .menu-btn {
-      color: #f1c76b;
-      background: transparent;
-      font-size: 27px;
-    }
-
-    .hero {
-      margin: 18px;
-      padding: 25px 20px;
-      border: 1px solid #a77d36;
-      border-radius: 18px;
-      background: linear-gradient(135deg, #42236b, #241044);
-    }
-
-    .hero h2 {
-      color: #f1c76b;
-      font-size: 25px;
-      margin-bottom: 10px;
-    }
-
-    .hero p {
-      color: #e3d9f3;
-      line-height: 1.5;
-    }
-
-    .hero button, .gold-btn {
-      background: linear-gradient(90deg, #c18a32, #f2d27b);
-      color: #241044;
-      font-weight: bold;
-      padding: 12px 20px;
-      border-radius: 9px;
-      margin-top: 17px;
-    }
-
-    .section-title {
-      margin: 25px 18px 15px;
-      color: #f1c76b;
-      font-size: 21px;
-    }
-
-    .search {
-      margin: 18px;
-    }
-
-    .search input {
-      width: 100%;
-      padding: 14px;
-      border-radius: 10px;
-      border: 1px solid #a77d36;
-      background: #2b1943;
-      color: white;
-      outline: none;
-      font-size: 15px;
-    }
-
-    .courses {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 13px;
-      padding: 0 18px 25px;
-    }
-
-    .course {
-      background: #2b1943;
-      border: 1px solid #75552f;
-      border-radius: 14px;
-      padding: 17px 12px;
-      min-height: 145px;
-    }
-
-    .course .emoji {
-      font-size: 28px;
-      margin-bottom: 12px;
-    }
-
-    .course h3 {
-      color: #f1c76b;
-      font-size: 16px;
-      margin-bottom: 7px;
-    }
-
-    .course p {
-      color: #cbbddd;
-      font-size: 12px;
-    }
-
-    .course button {
-      background: #e9bd64;
-      color: #241044;
-      padding: 9px 12px;
-      border-radius: 7px;
-      font-weight: bold;
-      margin-top: 13px;
-      width: 100%;
-    }
-
-    /* Menu */
-    #drawer {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 50;
-      background: #0009;
-    }
-
-    .drawer-content {
-      width: 78%;
-      max-width: 300px;
-      height: 100%;
-      background: #241044;
-      padding: 22px;
-      border-right: 1px solid #bd9145;
-    }
-
-    .drawer-content img {
-      width: 85px;
-      height: 85px;
-      object-fit: contain;
-      display: block;
-      margin: 15px auto;
-    }
-
-    .drawer-content h3 {
-      text-align: center;
-      color: #f1c76b;
-      margin-bottom: 25px;
-    }
-
-    .drawer-content button {
-      display: block;
-      width: 100%;
-      text-align: left;
-      padding: 14px 10px;
-      margin: 5px 0;
-      border-radius: 8px;
-      background: transparent;
-      color: white;
-    }
-
-    .drawer-content button:hover {
-      background: #49316b;
-    }
-
-    /* Pages */
-    #details {
-      display: none;
-      padding: 20px;
-    }
-
-    #details h2 {
-      color: #f1c76b;
-      margin-bottom: 15px;
-    }
-
-    .detail-card {
-      background: #2b1943;
-      padding: 17px;
-      border: 1px solid #75552f;
-      border-radius: 12px;
-      margin: 12px 0;
-    }
-
-    .detail-card h3 {
-      color: #f1c76b;
-      margin-bottom: 8px;
-    }
-
-    .back-btn {
-      background: #49316b;
-      color: white;
-      padding: 10px 17px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-    }
-
-    footer {
-      text-align: center;
-      padding: 25px 15px;
-      color: #b9a8ce;
-      border-top: 1px solid #49316b;
-      font-size: 13px;
-    }
-
-    @media (max-width: 350px) {
-      .courses { grid-template-columns: 1fr; }
-    }
-  </style>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:Arial,sans-serif;
+  background:#f6f3fb;
+  color:#241044;
+  padding-bottom:85px;
+}
+header{
+  background:linear-gradient(135deg,#241044,#482477);
+  color:white;padding:18px 16px 24px;
+  border-radius:0 0 25px 25px;
+}
+.top{display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px}
+.brand img{width:43px;height:43px;border-radius:50%;object-fit:cover}
+.brand h2{font-size:19px;color:#f3d27a}
+.brand small{display:block;color:#ddd;font-size:11px;margin-top:3px}
+.menu{
+  background:#ffffff20;border:1px solid #ffffff50;
+  color:white;font-size:23px;padding:7px 12px;border-radius:10px;
+}
+.welcome{margin-top:25px}
+.welcome h1{font-size:23px;margin-bottom:7px}
+.welcome p{font-size:13px;color:#e4d9f5}
+.search{margin-top:20px}
+.search input{
+  width:100%;padding:14px 16px;border:0;
+  border-radius:13px;font-size:14px;outline:none;
+}
+main{padding:20px 15px}
+.section-head{
+  display:flex;justify-content:space-between;
+  align-items:center;margin:8px 0 15px;
+}
+.section-head h2{font-size:18px}
+.section-head span{font-size:12px;color:#8765ae}
+.stats{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:12px;margin-bottom:25px;
+}
+.stat{
+  background:white;padding:16px;border-radius:15px;
+  box-shadow:0 3px 12px #24104410;
+}
+.stat b{font-size:20px;color:#9a7020}
+.stat p{font-size:12px;color:#777;margin-top:5px}
+.filters{display:flex;gap:9px;overflow:auto;margin-bottom:16px}
+.filter{
+  white-space:nowrap;padding:9px 15px;border-radius:20px;
+  border:1px solid #ddd;background:white;color:#4b356b;
+  font-size:12px;
+}
+.filter.active{background:#39205d;color:#f5d47d;border-color:#39205d}
+.courses{display:grid;grid-template-columns:1fr;gap:15px}
+.course{
+  background:white;border-radius:17px;overflow:hidden;
+  box-shadow:0 4px 15px #24104412;
+}
+.course-banner{
+  height:105px;background:linear-gradient(120deg,#29134d,#7650a0);
+  display:flex;align-items:center;justify-content:center;
+  color:#f4d27c;font-size:27px;font-weight:bold;
+}
+.course-info{padding:15px}
+.course-info h3{font-size:17px;margin-bottom:7px}
+.course-info p{font-size:12px;color:#777;margin-bottom:13px}
+.course-bottom{display:flex;align-items:center;justify-content:space-between}
+.course-bottom small{color:#8b6b2d;font-size:11px}
+.study-btn{
+  background:#3a205e;color:#f5d47d;border:0;
+  padding:10px 16px;border-radius:9px;font-weight:bold;
+}
+.gold-box{
+  background:linear-gradient(120deg,#39205d,#64418b);
+  color:white;padding:20px;border-radius:17px;margin:22px 0;
+}
+.gold-box h3{color:#f5d47d;margin-bottom:7px}
+.gold-box p{font-size:12px;color:#eee;line-height:1.5}
+.page{display:none}
+.page.active{display:block}
+.back{
+  border:0;background:#39205d;color:#f5d47d;
+  padding:10px 15px;border-radius:9px;margin-bottom:18px;
+}
+.lecture{
+  background:white;padding:16px;border-radius:12px;
+  margin:10px 0;display:flex;justify-content:space-between;
+  align-items:center;font-size:14px;
+}
+.lecture button{
+  background:#39205d;color:#f5d47d;border:0;
+  padding:8px 12px;border-radius:8px;
+}
+.bottom{
+  position:fixed;bottom:0;left:0;width:100%;
+  background:white;display:flex;justify-content:space-around;
+  padding:12px 4px calc(12px + env(safe-area-inset-bottom));
+  box-shadow:0 -3px 15px #00000012;z-index:5;
+}
+.bottom button{
+  border:0;background:none;color:#76668c;
+  font-size:11px;display:flex;flex-direction:column;
+  align-items:center;gap:5px;
+}
+.bottom button strong{font-size:19px}
+.bottom button.active{color:#8b641d}
+.drawer-bg{
+  display:none;position:fixed;inset:0;background:#0008;z-index:10;
+}
+.drawer{
+  width:78%;max-width:300px;height:100%;
+  background:#241044;color:white;padding:25px 18px;
+}
+.drawer img{width:65px;height:65px;border-radius:50%;margin-bottom:12px}
+.drawer h2{color:#f5d47d;font-size:19px;margin-bottom:5px}
+.drawer p{font-size:12px;color:#ddd;margin-bottom:25px}
+.drawer button{
+  display:block;width:100%;text-align:left;
+  background:#ffffff12;color:white;border:0;
+  padding:14px;margin:8px 0;border-radius:9px;
+}
+.drawer-bg.show{display:block}
+.empty{display:none;text-align:center;color:#777;padding:25px}
+footer{text-align:center;font-size:11px;color:#999;padding:20px}
+</style>
 </head>
 
 <body>
 
-  <!-- Splash Screen -->
-  <div id="splash">
-    <img src="./icon.png" alt="Dynamite Vijay Logo">
-    <h1>DYNAMITE VIJAY</h1>
-    <p>Study Smart. Score High.</p>
-    <div class="loader"></div>
+<header>
+  <div class="top">
+    <div class="brand">
+      <img src="./icon.png" alt="Logo">
+      <div>
+        <h2>Dynamite Vijay</h2>
+        <small>Study Smart. Score High.</small>
+      </div>
+    </div>
+    <button class="menu" onclick="openMenu()">☰</button>
   </div>
 
-  <!-- Header -->
-  <header>
-    <div class="brand">
-      <img src="./icon.png" alt="DV Logo">
-      <span>DYNAMITE VIJAY</span>
+  <div class="welcome">
+    <h1>Welcome to Dynamite Vijay! 👑</h1>
+    <p>Your learning journey starts here.</p>
+  </div>
+
+  <div class="search">
+    <input id="searchInput" type="search"
+      placeholder="Search courses..." oninput="searchCourses()">
+  </div>
+</header>
+
+<main>
+  <section id="homePage" class="page active">
+
+    <div class="stats">
+      <div class="stat">
+        <b>📚 Courses</b>
+        <p>Explore your subjects</p>
+      </div>
+      <div class="stat">
+        <b>🎯 Learn</b>
+        <p>Study at your own pace</p>
+      </div>
     </div>
-    <button class="menu-btn" onclick="toggleMenu()">☰</button>
-  </header>
 
-  <!-- Home -->
-  <main id="home">
-    <section class="hero">
-      <h2>Welcome to Dynamite Vijay 👑</h2>
-      <p>Your Personal Study Platform. Learn better, prepare smarter and achieve your goals.</p>
-      <button onclick="showCourses()">Explore Courses →</button>
-    </section>
-
-    <h2 class="section-title">Find Your Course</h2>
-
-    <div class="search">
-      <input id="searchInput" type="search"
-        placeholder="Search your course..."
-        oninput="searchCourses()">
+    <div class="section-head">
+      <h2>Explore Courses</h2>
+      <span>LEARN MORE →</span>
     </div>
 
-    <h2 class="section-title">Available Courses</h2>
+    <div class="filters">
+      <button class="filter active" onclick="filterCourses('all',this)">All</button>
+      <button class="filter" onclick="filterCourses('ssc',this)">SSC</button>
+      <button class="filter" onclick="filterCourses('maths',this)">Maths</button>
+      <button class="filter" onclick="filterCourses('other',this)">Other</button>
+    </div>
 
     <div class="courses" id="courseList">
-      <div class="course" data-name="ssc cgl 2027">
-        <div class="emoji">🎯</div>
-        <h3>SSC CGL 2027</h3>
-        <p>Complete preparation</p>
-        <button onclick="openCourse('SSC CGL 2027')">Study Now</button>
+
+      <div class="course" data-category="ssc">
+        <div class="course-banner">SSC CGL 2027</div>
+        <div class="course-info">
+          <h3>SSC CGL 2027</h3>
+          <p>Complete preparation • Maths • Reasoning • English • GS</p>
+          <div class="course-bottom">
+            <small>COMPETITIVE EXAM</small>
+            <button class="study-btn" onclick="openCourse('SSC CGL 2027')">Study Now →</button>
+          </div>
+        </div>
       </div>
 
-      <div class="course" data-name="mathematics maths">
-        <div class="emoji">📐</div>
-        <h3>Mathematics</h3>
-        <p>Learn with practice</p>
-        <button onclick="openCourse('Mathematics')">Study Now</button>
+      <div class="course" data-category="maths">
+        <div class="course-banner">MATHEMATICS</div>
+        <div class="course-info">
+          <h3>Mathematics</h3>
+          <p>Learn concepts and practice questions</p>
+          <div class="course-bottom">
+            <small>SUBJECT</small>
+            <button class="study-btn" onclick="openCourse('Mathematics')">Study Now →</button>
+          </div>
+        </div>
       </div>
 
-      <div class="course" data-name="general studies gs">
-        <div class="emoji">🌍</div>
-        <h3>General Studies</h3>
-        <p>Build your knowledge</p>
-        <button onclick="openCourse('General Studies')">Study Now</button>
+      <div class="course" data-category="other">
+        <div class="course-banner">GENERAL STUDIES</div>
+        <div class="course-info">
+          <h3>General Studies</h3>
+          <p>History • Geography • Polity • Science</p>
+          <div class="course-bottom">
+            <small>SUBJECT</small>
+            <button class="study-btn" onclick="openCourse('General Studies')">Study Now →</button>
+          </div>
+        </div>
       </div>
 
-      <div class="course" data-name="english">
-        <div class="emoji">📚</div>
-        <h3>English</h3>
-        <p>Grammar and vocabulary</p>
-        <button onclick="openCourse('English')">Study Now</button>
+      <div class="course" data-category="other">
+        <div class="course-banner">ENGLISH</div>
+        <div class="course-info">
+          <h3>English</h3>
+          <p>Grammar • Vocabulary • Comprehension</p>
+          <div class="course-bottom">
+            <small>SUBJECT</small>
+            <button class="study-btn" onclick="openCourse('English')">Study Now →</button>
+          </div>
+        </div>
       </div>
+
     </div>
-  </main>
+    <div class="empty" id="emptyMessage">No courses found.</div>
 
-  <!-- Course Details -->
-  <section id="details">
-    <button class="back-btn" onclick="goHome()">← Back to Home</button>
-    <h2 id="courseTitle">Course</h2>
-    <p style="color:#cbbddd; margin-bottom:20px;">
-      Select a subject to continue your studies.
-    </p>
-
-    <div class="detail-card">
-      <h3>📺 Video Lectures</h3>
-      <p>Video lectures will appear here after they are added by the Admin.</p>
-    </div>
-
-    <div class="detail-card">
-      <h3>📄 Study PDFs</h3>
-      <p>PDF notes and study materials will appear here after they are added by the Admin.</p>
+    <div class="gold-box">
+      <h3>✨ Keep Learning, Keep Growing!</h3>
+      <p>Consistency is the key to success. Make every day a learning day.</p>
     </div>
   </section>
 
-  <!-- Side Menu -->
-  <div id="drawer" onclick="closeMenu(event)">
-    <div class="drawer-content">
-      <img src="./icon.png" alt="DV Logo">
-      <h3>DYNAMITE VIJAY</h3>
-      <button onclick="goHome()">🏠 Home</button>
-      <button onclick="showCourses()">📚 My Courses</button>
-      <button onclick="showMessage('Downloads')">⬇ Downloads</button>
-      <button onclick="showMessage('Notifications')">🔔 Notifications</button>
-      <button onclick="showMessage('About')">ℹ About</button>
-      <button onclick="showMessage('Support')">💬 Support</button>
-      <button onclick="closeMenu()">✕ Close Menu</button>
+  <section id="coursePage" class="page">
+    <button class="back" onclick="goHome()">← Back to Home</button>
+    <div class="section-head">
+      <h2 id="courseTitle">Course</h2>
     </div>
-  </div>
+    <div class="gold-box">
+      <h3>Welcome to your course!</h3>
+      <p>Chapters and lectures will appear here when the owner adds study material.</p>
+    </div>
+    <h3 style="margin:20px 0 12px">📖 Course Content</h3>
+    <div class="lecture">Chapter 1 – Introduction <span>🔒</span></div>
+    <div class="lecture">Chapter 2 – Concepts <span>🔒</span></div>
+    <div class="lecture">Chapter 3 – Practice <span>🔒</span></div>
+  </section>
 
-  <footer>
-    <p>👑 DYNAMITE VIJAY</p>
+  <section id="libraryPage" class="page">
+    <h2 style="margin-bottom:15px">📚 My Library</h2>
+    <p style="color:#777;font-size:13px">Your enrolled courses will appear here.</p>
+  </section>
+
+  <section id="profilePage" class="page">
+    <h2 style="margin-bottom:15px">👤 My Profile</h2>
+    <div class="gold-box">
+      <h3>Dynamite Vijay Student</h3>
+      <p>Student access is open. No student login required.</p>
+    </div>
+    <p style="font-size:13px">App Version: 1.0</p>
+  </section>
+</main>
+
+<div class="bottom">
+  <button class="active" onclick="showPage('homePage',this)">
+    <strong>⌂</strong>Home
+  </button>
+  <button onclick="showPage('libraryPage',this)">
+    <strong>▤</strong>Library
+  </button>
+  <button onclick="showPage('profilePage',this)">
+    <strong>♙</strong>Profile
+  </button>
+</div>
+
+<div class="drawer-bg" id="drawerBg" onclick="closeMenu(event)">
+  <div class="drawer" onclick="event.stopPropagation()">
+    <img src="./icon.png" alt="Logo">
+    <h2>Dynamite Vijay</h2>
     <p>Study Smart. Score High.</p>
-    <p style="margin-top:10px;">© 2026 Dynamite Vijay</p>
-  </footer>
+    <button onclick="goHome();closeMenu()">⌂ Home</button>
+    <button onclick="showPage('libraryPage');closeMenu()">📚 My Library</button>
+    <button onclick="showPage('profilePage');closeMenu()">👤 My Profile</button>
+    <button onclick="alert('Notifications will be available in a future update.')">🔔 Notifications</button>
+    <button onclick="alert('Owner Admin Panel will be added in the next development stage.')">⚙ Owner Admin Panel</button>
+    <button onclick="closeMenu()">✕ Close Menu</button>
+  </div>
+</div>
 
-  <script>
-    // Splash screen: show for 2 seconds
-    window.addEventListener("load", function() {
-      setTimeout(function() {
-        const splash = document.getElementById("splash");
-        splash.style.opacity = "0";
-        setTimeout(() => splash.style.display = "none", 500);
-      }, 2000);
-    });
+<footer>© 2026 Dynamite Vijay • Study Smart. Score High.</footer>
 
-    function openCourse(name) {
-      document.getElementById("home").style.display = "none";
-      document.getElementById("details").style.display = "block";
-      document.getElementById("courseTitle").textContent = name;
-      window.scrollTo(0, 0);
-    }
-
-    function goHome() {
-      document.getElementById("details").style.display = "none";
-      document.getElementById("home").style.display = "block";
-      closeMenu();
-      window.scrollTo(0, 0);
-    }
-
-    function showCourses() {
-      goHome();
-      document.querySelector(".section-title").scrollIntoView({
-        behavior: "smooth"
-      });
-    }
-
-    function toggleMenu() {
-      document.getElementById("drawer").style.display = "block";
-    }
-
-    function closeMenu(event) {
-      if (!event || event.target.id === "drawer" ||
-          event.target.tagName === "BUTTON") {
-        document.getElementById("drawer").style.display = "none";
-      }
-    }
-
-    function showMessage(name) {
-      closeMenu();
-      alert(name + " section will be available soon.");
-    }
-
-    function searchCourses() {
-      const value = document.getElementById("searchInput")
-        .value.toLowerCase();
-
-      document.querySelectorAll(".course").forEach(course => {
-        course.style.display =
-          course.dataset.name.includes(value) ? "block" : "none";
-      });
-    }
-
-    // PWA service worker
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./sw.js")
-          .catch(error => console.log("Service worker:", error));
-      });
-    }
-  </script>
-
+<script>
+function openMenu(){
+  document.getElementById('drawerBg').classList.add('show');
+}
+function closeMenu(e){
+  if(!e || e.target.id==='drawerBg' || e.target.tagName==='BUTTON'){
+    document.getElementById('drawerBg').classList.remove('show');
+  }
+}
+function showPage(page,button){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(page).classList.add('active');
+  document.querySelectorAll('.bottom button').forEach(b=>b.classList.remove('active'));
+  if(button) button.classList.add('active');
+  window.scrollTo(0,0);
+}
+function goHome(){
+  showPage('homePage',document.querySelector('.bottom button'));
+}
+function openCourse(name){
+  document.getElementById('courseTitle').textContent=name;
+  showPage('coursePage');
+}
+function filterCourses(category,button){
+  document.querySelectorAll('.filter').forEach(b=>b.classList.remove('active'));
+  button.classList.add('active');
+  document.querySelectorAll('.course').forEach(course=>{
+    course.style.display=(category==='all'||course.dataset.category===category)?'block':'none';
+  });
+  document.getElementById('emptyMessage').style.display='none';
+}
+function searchCourses(){
+  const query=document.getElementById('searchInput').value.toLowerCase();
+  let count=0;
+  document.querySelectorAll('.course').forEach(course=>{
+    const match=course.innerText.toLowerCase().includes(query);
+    course.style.display=match?'block':'none';
+    if(match) count++;
+  });
+  document.getElementById('emptyMessage').style.display=count?'none':'block';
+}
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('./sw.js').catch(()=>{});
+  });
+}
+</script>
 </body>
 </html>
