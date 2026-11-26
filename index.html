@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#241044">
+<title>Dynamite Vijay - Study App</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f7f4fc;color:#241044;font-family:Arial,sans-serif}
+header{background:#241044;color:white;padding:24px 18px;border-radius:0 0 25px 25px}
+.brand{font-size:25px;font-weight:900;color:#ffd66b}
+header p{margin-bottom:0;color:#e6dcf5}
+nav{display:flex;gap:10px;padding:16px;overflow:auto}
+nav button,.action{border:0;border-radius:12px;padding:12px 17px;background:#eee5fc;color:#32135e;font-weight:bold;white-space:nowrap}
+nav button.active,.action{background:#6d35b5;color:white}
+h2{margin:12px 18px}
+.search{margin:12px 18px;width:calc(100% - 36px);padding:14px;border:1px solid #ddd;border-radius:12px;font-size:15px}
+.card{background:white;margin:14px;padding:17px;border-radius:18px;box-shadow:0 4px 18px #25104412}
+.banner{background:linear-gradient(120deg,#492078,#8c55ca);color:white;padding:23px;border-radius:18px}
+.banner h2{margin:0 0 10px}
+.card h3{margin-top:0}
+small{color:#777}
+.action{display:inline-block;margin-top:10px;cursor:pointer}
+.drawer{display:none;background:white;margin:0 14px;padding:15px;border-radius:15px}
+.drawer.show{display:block}
+.drawer p{padding:8px;border-bottom:1px solid #eee}
+footer{text-align:center;padding:25px;color:#777}
+</style>
+</head>
+<body>
+<header>
+<div class="brand">👑 DYNAMITE VIJAY</div>
+<p>Study Smart. Score High.</p>
+</header>
+<nav>
+<button class="active" onclick="home()">Home</button>
+<button onclick="courses()">Courses</button>
+<button onclick="menu()">☰ Menu</button>
+</nav>
+<div id="drawer" class="drawer">
+<p>🏠 Home</p><p>📚 My Courses</p>
+<p>📥 Downloads</p><p>🔔 Notifications</p>
+<p>ℹ️ About Us</p><p>☎️ Support</p>
+</div>
+<main id="content">
+<div class="card">
+<div class="banner">
+<h2>Welcome to Dynamite Vijay!</h2>
+<p>Your learning journey starts here.</p>
+</div>
+</div>
+<h2>📚 Available Courses</h2>
+<input class="search" id="search" placeholder="Search courses..." oninput="filter()">
+<div id="courses"></div>
+</main>
+<footer>© 2026 Dynamite Vijay</footer>
+<script>
+const data=[
+{name:"SSC CGL 2027",desc:"Complete SSC CGL preparation"},
+{name:"Mathematics",desc:"Chapter-wise Maths classes"},
+{name:"General Studies",desc:"Learn GK and Current Affairs"}
+];
+function render(items){
+document.getElementById("courses").innerHTML=items.map(c=>`
+<div class="card"><h3>📘 ${c.name}</h3>
+<small>${c.desc}</small><br>
+<button class="action" onclick="study('${c.name}')">Study Now →</button>
+</div>`).join("");
+}
+function home(){document.getElementById("drawer").classList.remove("show");render(data)}
+function courses(){home();document.getElementById("courses").scrollIntoView()}
+function menu(){document.getElementById("drawer").classList.toggle("show")}
+function filter(){let q=document.getElementById("search").value.toLowerCase();render(data.filter(c=>c.name.toLowerCase().includes(q)))}
+function study(name){
+document.getElementById("content").innerHTML=`
+<div class="card"><button class="action" onclick="home()">← Back</button>
+<h2>${name}</h2><p>Study Material</p>
+<div class="card">📖 Mathematics<br><small>Chapters and Lectures</small></div>
+<div class="card">🎥 Video Lectures<br><small>Videos will be added by Admin</small></div>
+<div class="card">📄 PDF Notes<br><small>Notes will be added by Admin</small></div>
+</div>`;
+}
+render(data);
+</script>
+</body>
+</html>
